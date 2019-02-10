@@ -37,14 +37,14 @@
 /* these following pairs make 8x8 square grid */
 /* lower and upper bounds on hydrogen density - log cm^-3*/
 #define HDENINIT 2.0
-#define HDENLIMIT 4.5
+#define HDENLIMIT 5.0
 
 /* low and up bounds on Temperature K */
-#define TEMPINIT 2.0
-#define TEMPLIMIT 4.5
+#define TEMPINIT 3.7
+#define TEMPLIMIT 5.0
 
 /* the increment on both axis */
-#define INCREMENT 0.1
+#define INCREMENT 0.05
 
 /* this is the number of iterations to do -1 means to convergence, 1 will do 1 iteration and so on*/ 
 #define ITERATIONS  -1 
