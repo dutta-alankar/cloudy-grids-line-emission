@@ -63,7 +63,7 @@
 #define PRINT_LAST false
 
 /* set no buffering on output - if true then print as it happens*/
-#define NO_BUFFERING true
+#define NO_BUFFERING false
 
 /*print cloudy commands or not*/
 #define PRINT_COMMAND false
