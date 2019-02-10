@@ -8,7 +8,6 @@ Created on Sun Feb 10 18:26:56 2019
 
 import matplotlib.pyplot as plt
 import numpy as np
-import heapq
 
 data = np.loadtxt('OIII_spectra.lin',skiprows=2)
 #print(data)
@@ -27,8 +26,11 @@ for i in range(len(ne)):
         counter += 1
 
 # a base value of -30 is provided to avoid nans        
-if (-30.0 in ratio): plt.pcolor(ne,T,np.log10(10**-ratio_cont),vmin=heapq.nsmallest(2,np.array(list(set(ratio))))[-1])
-else: plt.pcolor(ne,T,np.log10(10**-ratio_cont)) #change normalization with respect to 4363 A line intensity
+if (-30.0 in ratio): 
+    import heapq
+    plt.pcolor(ne,T,-ratio_cont,vmin=heapq.nsmallest(2,np.array(list(set(-ratio))))[-1])
+else: plt.pcolor(ne,T,-ratio_cont) #change normalization with respect to 4363 A line intensity
+
 plt.colorbar()
 plt.xlabel(r'$\log(n_H)$')
 plt.ylabel(r'$\log(T)$')
