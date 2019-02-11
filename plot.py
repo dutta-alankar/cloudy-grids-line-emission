@@ -25,15 +25,25 @@ for i in range(len(ne)):
         ratio_cont[j,i] = ratio[counter]
         counter += 1
 
+plt.figure(figsize=(12,8))
 # a base value of -30 is provided to avoid nans        
 if (-30.0 in ratio): 
     import heapq
     plt.pcolor(ne,T,-ratio_cont,vmin=heapq.nsmallest(2,np.array(list(set(-ratio))))[-1])
-else: plt.pcolor(ne,T,-ratio_cont) #change normalization with respect to 4363 A line intensity
+    plt.colorbar()
+    rcParams['contour.negative_linestyle'] = 'solid'
+    CS = plt.contour(ne,T,-ratio_cont, 10,colors='white',vmin=heapq.nsmallest(2,np.array(list(set(-ratio))))[-1])
+    plt.clabel(CS, fontsize=12, inline=1, fmt='%1.1f')
+else: 
+    plt.pcolor(ne,T,-ratio_cont) #change normalization with respect to 4363 A line intensity
+    plt.colorbar()
+    rcParams['contour.negative_linestyle'] = 'solid'
+    CS = plt.contour(ne,T,-ratio_cont, 10,colors='white')
+    plt.clabel(CS, fontsize=12, inline=1, fmt='%1.1f')
 
-plt.colorbar()
-plt.xlabel(r'$\log(n_H)$')
-plt.ylabel(r'$\log(T)$')
-plt.title(r'$\frac{I(\lambda = 5007 \AA)}{I(\lambda = 4363 \AA)}$')
+#plt.figure(figsize=(20,10))
+plt.xlabel(r'$\log(n_H)$',size=18)
+plt.ylabel(r'$\log(T)$',size=18)
+plt.title(r'$\frac{I(\lambda = 5007 \AA)}{I(\lambda = 4363 \AA)}$',size=20,y=1.03)
 plt.savefig('line_ratio.png')
 plt.show()
