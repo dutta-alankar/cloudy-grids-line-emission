@@ -42,8 +42,9 @@
 #define TEMPINIT 3.7
 #define TEMPLIMIT 5.0
 
-/* the increment on both axis */
-#define INCREMENT 0.05
+/* the increment on the two axes */
+#define INCREMENT_T 0.02
+#define INCREMENT_H 0.05
 
 /* this is the number of iterations to do -1 means to convergence, 1 will do 1 iteration and so on*/ 
 #define ITERATIONS  -1 
@@ -222,8 +223,8 @@ int main( int argc, char *argv[] )
 		 * make arrays of parameters for this grid */
 
 		/* total number of models */
-		LimModels = (long)((TEMPLIMIT - TEMPINIT)/INCREMENT + 1.1); //gets round up to nearest integer by adding 1.1
-		LimModels *= (long)((HDENLIMIT - HDENINIT)/INCREMENT+1.1); //gets round up to nearest integer by adding 1.1
+		LimModels = (long)((TEMPLIMIT - TEMPINIT)/INCREMENT_T + 1.1); //gets round up to nearest integer by adding 1.1
+		LimModels *= (long)((HDENLIMIT - HDENINIT)/INCREMENT_H+1.1); //gets round up to nearest integer by adding 1.1
 		/* add number of processors since this is most we would possibly have to 
 		 * add on to make integer number of mpi calls */
 		LimModels += numprocs; //-1
@@ -248,9 +249,9 @@ int main( int argc, char *argv[] )
 		nErrorExits = 0;
 
 		/* on scalar machines do models in xy order */
-		for( hden = HDENINIT; hden<= 1.00001 * HDENLIMIT; hden+=INCREMENT )
+		for( hden = HDENINIT; hden<= 1.00001 * HDENLIMIT; hden+=INCREMENT_H )
 		{
-			for( temperature=TEMPINIT; temperature<=TEMPLIMIT;  temperature+= INCREMENT )
+			for( temperature=TEMPINIT; temperature<=TEMPLIMIT;  temperature+= INCREMENT_T )
 			{
 				xpar[nModels] = hden;
 				ypar[nModels] = temperature;
