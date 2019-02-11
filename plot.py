@@ -45,5 +45,5 @@ else:
 plt.xlabel(r'$\log(n_H)$',size=18)
 plt.ylabel(r'$\log(T)$',size=18)
 plt.title(r'$\frac{I(\lambda = 5007 \AA)}{I(\lambda = 4363 \AA)}$',size=20,y=1.03)
-plt.savefig('line_ratio.png')
+plt.savefig('line_ratio.jpg')
 plt.show()
