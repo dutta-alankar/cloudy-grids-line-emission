@@ -7,6 +7,7 @@ Created on Sun Feb 10 18:26:56 2019
 """
 
 import matplotlib.pyplot as plt
+from matplotlib import rc,rcParams
 import numpy as np
 
 data = np.loadtxt('OIII_spectra.lin',skiprows=2)
@@ -45,5 +46,7 @@ else:
 plt.xlabel(r'$\log(n_H)$',size=18)
 plt.ylabel(r'$\log(T)$',size=18)
 plt.title(r'$\frac{I(\lambda = 5007 \AA)}{I(\lambda = 4363 \AA)}$',size=20,y=1.03)
+rc('xtick', labelsize=18) 
+rc('ytick', labelsize=18)
 plt.savefig('line_ratio.jpg')
 plt.show()
