@@ -9,3 +9,5 @@ Clouds in Collisional Ionization equilibrium with different densities and temper
 To compile, paste the .cpp file to where libcloudy.a library is already compiled (using make) and then run,
 
 mpic++ -O3 -o mycloudy_mpi.exe mpi_grid.cpp -L. -lcloudy -lm -std=c++11
+
+CLOUDY version: 17.01
