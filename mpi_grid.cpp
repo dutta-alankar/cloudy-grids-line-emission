@@ -1,7 +1,6 @@
-/* This file is part of Cloudy and is copyright (C)1978-2017 by Gary J. Ferland and
- * others.  For conditions of distribution and use see copyright notice in license.txt */
-/*Bug fixed and reloaded by Alankar Dutta*/
-/*main program to call cloudy to generate a large loc data cube */
+/* This file is part of Cloudy and is copyright (C)1978-2017 by Gary J. Ferland and others.*/
+/*Bug fixed and modified for the purpose by Alankar Dutta*/
+
 #include "cddefines.h"
 #include "cddrive.h"
 #include "version.h"
