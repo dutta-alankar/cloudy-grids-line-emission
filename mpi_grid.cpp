@@ -6,11 +6,11 @@
 #include "version.h"
 
 /* This flag indicates where we are multi-processing.\
- * set with -DMPI on compiler command line
+ * set with -DMPI_ENABLED on compiler command line
  * if this is true then all output happens at the end,
  * if false then each set of results is printed and flushed when it happens.
  * must be set true on parallel machines, false on pc */
-#ifdef MPI 
+#ifdef MPI_ENABLED 
 #	include <mpi.h>
 #endif
 /*lint -e506  constant value Boolean */
@@ -89,7 +89,7 @@ typedef struct //create a custom datatype GRIDTAG (dictionary)
 } GRIDTAG;
 
 /* this is where we will save results */
-#ifdef MPI
+#ifdef MPI_ENABLED
 /*This creates a custom MPI datatype handler corresponding to GRIDTAG that can be communicated across processes*/
 void Build_derived_type(GRIDTAG gridtag, MPI_Datatype* message_type_ptr)
 {
@@ -196,7 +196,7 @@ int main( int argc, char *argv[] )
 		grid.exit_status = ES_SUCCESS;
 
 		/* start MPI if -DMPI on command line */
-#		ifdef MPI
+#		ifdef MPI_ENABLED
 		GRIDTAG gridtag; //element of custom datatype GRIDTAG
 		GRIDTAG *grids; //pointer to custom datatype GRIDTAG
 		
@@ -237,7 +237,7 @@ int main( int argc, char *argv[] )
 		if( xpar==NULL || ypar==NULL )
 		{
 			fprintf(stderr,"malloc failed! Couldn't allocate space required!\n");
-#			ifdef MPI 
+#			ifdef MPI_ENABLED 
 			MPI_Finalize(); 
 #			endif
 			cdEXIT(EXIT_FAILURE);
@@ -284,7 +284,7 @@ int main( int argc, char *argv[] )
 
 		/* ====================================================================== */
 
-#		ifdef MPI
+#		ifdef MPI_ENABLED
 		/* allocate memory for grids */	
 		if( (grids = ((GRIDTAG *)malloc( (size_t)(numprocs)*sizeof(GRIDTAG )))) == NULL )
 		{
@@ -387,11 +387,6 @@ int main( int argc, char *argv[] )
 			sprintf(chLine,"iterate %i", ITERATIONS);
 			n = cdRead( chLine  );
 #			endif
-#			endif
-
-#			ifdef MPI 
-			/* set flag so that exit handler will call MPI_Finalize */
-			cpu.set_MPI();
 #			endif
 
 			/* option to turn off file buffering if code might crash */
@@ -542,7 +537,7 @@ int main( int argc, char *argv[] )
 			}
 
 			/* print the results here if not MPI */
-#			ifndef MPI
+#			ifndef MPI_ENABLED
 			/* print exec time and numbers of problems */
 			//fprintf(ioDATA,"%i\t%i\t%g\t" , grid.exit_status,	grid.nWarnings , grid.etime);
 
@@ -563,7 +558,7 @@ int main( int argc, char *argv[] )
 			fflush(ioDATA );
 #			endif
 
-#			ifdef MPI
+#			ifdef MPI_ENABLED
 			//MPI_Barrier(MPI_COMM_WORLD);
 			MPI_Gather(&grid,1,message_type,grids,1,message_type,0,MPI_COMM_WORLD);
 
@@ -607,7 +602,7 @@ int main( int argc, char *argv[] )
 		//free(cool );
 
 		/* call MPI_Finalize if MPI is set */
-#		ifdef MPI 
+#		ifdef MPI_ENABLED 
 		free(grids);
 		/* only print message if errors occurred */
 		if( nErrorExits )
@@ -618,6 +613,7 @@ int main( int argc, char *argv[] )
 				fprintf( ioQQQ, "processor %i main exit %i aborts\n" ,myrank, nErrorExits );
 			}
 		}
+		//printf("Parallel processed!\n");
 		MPI_Finalize(); 
 #		else
 		fprintf( stderr, "exit in main with %i aborted models\n" , nErrorExits );
