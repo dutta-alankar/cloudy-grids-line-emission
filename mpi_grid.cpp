@@ -511,7 +511,7 @@ int main( int argc, char *argv[] )
 			grid.hden = hden;
 			grid.temperature = temperature;
 			grid.eden = log10(cdEDEN_last());
-			grid.cool = log10(cdCooling_last());
+			grid.cool = log10(cdHeating_last()-cdCooling_last());
 
 			/* if we have run off end of array of models do not try to pull out
 			 * results since they do not exist*/
