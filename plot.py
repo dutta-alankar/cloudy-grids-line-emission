@@ -74,7 +74,7 @@ figure = corner.corner(samples, labels=[r"$\log(n_H)$", r"$\log(T)$"],
                        )
 plt.show()
 """
-cool = np.log10(np.abs(10.**data[:,3] - 10.**data[:,4]))
+cool = np.log10(np.abs((10.**data[:,3] - 10.**data[:,4]))/10**(data[:,0]*data[:,2]))
 counter = 0
 nene, TT = np.meshgrid(ne,T)
 cool_cont = np.zeros((len(T),len(ne)))
@@ -91,7 +91,7 @@ CS = plt.contour(ne,T,cool_cont, 10,colors='white')
 plt.clabel(CS, fontsize=12, inline=1, fmt='%1.1f')
 plt.xlabel(r'$\log(n_H)$',size=18)
 plt.ylabel(r'$\log(T)$',size=18)
-plt.title(r'Cooling Curve (log scale)',size=20,y=1.01)
+plt.title(r'Cooling Curve (log scale) $\frac{\Lambda}{n_e n_H} [erg.cm^3.s^{-1}]$',size=20,y=1.01)
 rc('xtick', labelsize=18) 
 rc('ytick', labelsize=18)
 plt.savefig('cooling.png')
