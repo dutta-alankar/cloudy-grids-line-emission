@@ -1,4 +1,4 @@
-This generates an MPI parallelized executable with mpiCC (based on g++)
+This generates an MPI parallelized executable with mpic++ or mpicxx (based on g++)
 for running a large grid.
 
 to build enter
@@ -8,9 +8,7 @@ make debug
 
 add "-j n" where n is the number of threads to use in the build.
 
-This will not work on a Mac, since it uses mpiCC which is misinterpreted as
-mpicc on the Mac file system.  Macs use ++ rather than CC to indicate C++.
-Try replacing mpiCC with mpic++
+For Mac, seperate Makefile is provided.
 
-to use the MacPorts openmpi mv Makefile_conf.Mac to Makefile.conf
+To use the MacPorts openmpi mv Makefile_conf.Mac to Makefile.conf
 
