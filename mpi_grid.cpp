@@ -43,8 +43,8 @@
 #define TEMPLIMIT 5.0
 
 /* the increment on the two axes */
-#define INCREMENT_T 0.02
-#define INCREMENT_H 0.05
+#define INCREMENT_T 0.01
+#define INCREMENT_H 0.01
 
 /* this is the number of iterations to do -1 means to convergence, 1 will do 1 iteration and so on*/ 
 #define ITERATIONS  -1 
