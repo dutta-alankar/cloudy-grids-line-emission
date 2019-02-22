@@ -74,3 +74,26 @@ figure = corner.corner(samples, labels=[r"$\log(n_H)$", r"$\log(T)$"],
                        )
 plt.show()
 """
+cool = data[:,3]
+counter = 0
+nene, TT = np.meshgrid(ne,T)
+cool_cont = np.zeros((len(T),len(ne)))
+for i in range(len(ne)):
+    for j in range(len(T)):
+        cool_cont[j,i] = cool[counter]
+        counter += 1
+
+plt.figure(figsize=(13,10))
+plt.pcolormesh(ne,T,cool_cont) #change normalization with respect to 4363 A line intensity
+plt.colorbar()
+rcParams['contour.negative_linestyle'] = 'solid'
+CS = plt.contour(ne,T,cool_cont, 10,colors='white')
+plt.clabel(CS, fontsize=12, inline=1, fmt='%1.1f')
+plt.xlabel(r'$\log(n_H)$',size=18)
+plt.ylabel(r'$\log(T)$',size=18)
+plt.title(r'Cooling Curve (log scale)',size=20,y=1.01)
+rc('xtick', labelsize=18) 
+rc('ytick', labelsize=18)
+plt.savefig('cooling.png')
+plt.show()
+plt.show()
