@@ -85,7 +85,7 @@ typedef struct //create a custom datatype GRIDTAG (dictionary)
 	/* the execution time for this model */
 	double etime;
 	/* two extra parameters */
-	double eden , cool;
+	double eden , cool, heat;
 } GRIDTAG;
 
 /* this is where we will save results */
@@ -93,10 +93,10 @@ typedef struct //create a custom datatype GRIDTAG (dictionary)
 /*This creates a custom MPI datatype handler corresponding to GRIDTAG that can be communicated across processes*/
 void Build_derived_type(GRIDTAG gridtag, MPI_Datatype* message_type_ptr)
 {
-  int block_lengths[10];
-  MPI_Aint displacements[10];
-  MPI_Aint addresses[11];
-  MPI_Datatype typelist[10];
+  int block_lengths[11];
+  MPI_Aint displacements[11];
+  MPI_Aint addresses[12];
+  MPI_Datatype typelist[11];
 
   /*First specify the types */
   typelist[0] = MPI_DOUBLE;    /*hden*/
@@ -109,15 +109,16 @@ void Build_derived_type(GRIDTAG gridtag, MPI_Datatype* message_type_ptr)
   typelist[7] = MPI_DOUBLE;    /*etime*/
   typelist[8] = MPI_DOUBLE;    /*eden*/
   typelist[9] = MPI_DOUBLE;    /*cool*/
+  typelist[10] = MPI_DOUBLE;   /*heat*/
 
   /* Specify the number of elements of each type */
   block_lengths[0] = block_lengths[1] = block_lengths[3] = 1;
   block_lengths[4] = block_lengths[5] = block_lengths[6] = 1;
-  block_lengths[7] = 1;
+  block_lengths[7] = 1; 
   /* this one is special since it is NLINTOT long */
   block_lengths[2] = NLINTOT;
   /* two new parameters are each one element long */
-  block_lengths[8] = block_lengths[9] = 1;
+  block_lengths[8] = block_lengths[9] = 1; block_lengths[10] = 1;
 
   /* Calculate the displacement of the members relative to indata */
   MPI_Address( &gridtag,             &addresses[0]);
@@ -131,21 +132,23 @@ void Build_derived_type(GRIDTAG gridtag, MPI_Datatype* message_type_ptr)
   MPI_Address(&(gridtag.etime),      &addresses[8]);
   MPI_Address(&(gridtag.eden),       &addresses[9]);
   MPI_Address(&(gridtag.cool),       &addresses[10]);
+  MPI_Address(&(gridtag.heat),       &addresses[11]);
  
   /* now far each is from the beginning of the structure */
-  displacements[0] = addresses[1] - addresses[0];
-  displacements[1] = addresses[2] - addresses[0];
-  displacements[2] = addresses[3] - addresses[0];
-  displacements[3] = addresses[4] - addresses[0];
-  displacements[4] = addresses[5] - addresses[0];
-  displacements[5] = addresses[6] - addresses[0];
-  displacements[6] = addresses[7] - addresses[0];
-  displacements[7] = addresses[8] - addresses[0];
-  displacements[8] = addresses[9] - addresses[0];
-  displacements[9] = addresses[10]- addresses[0];
+  displacements[0] =  addresses[1]  - addresses[0];
+  displacements[1] =  addresses[2]  - addresses[0];
+  displacements[2] =  addresses[3]  - addresses[0];
+  displacements[3] =  addresses[4]  - addresses[0];
+  displacements[4] =  addresses[5]  - addresses[0];
+  displacements[5] =  addresses[6]  - addresses[0];
+  displacements[6] =  addresses[7]  - addresses[0];
+  displacements[7] =  addresses[8]  - addresses[0];
+  displacements[8] =  addresses[9]  - addresses[0];
+  displacements[9] =  addresses[10] - addresses[0];
+  displacements[10] = addresses[11] - addresses[0];
 
   /*Create the derived type */
-  MPI_Type_struct(10, block_lengths, displacements, typelist,message_type_ptr);
+  MPI_Type_struct(11, block_lengths, displacements, typelist,message_type_ptr);
   
   /*Commit it so that it can be used */
   MPI_Type_commit(message_type_ptr);
@@ -471,7 +474,7 @@ int main( int argc, char *argv[] )
 				/* all the printout happens here */
 				/* print header for the data file */
 				//fprintf(ioDATA,"abort\twarn\tExecT\tdensity\ttemperature\teden\tcool\t");
-				fprintf(ioDATA,"density\ttemperature\teden\tcool\t");
+				fprintf(ioDATA,"density\ttemperature\teden\tcool\theat\t");
 				for( n=0; n<nLines; ++n )
 				{
 					fprintf(ioDATA,"%4s (",chLabel[n]);
@@ -511,7 +514,8 @@ int main( int argc, char *argv[] )
 			grid.hden = hden;
 			grid.temperature = temperature;
 			grid.eden = log10(cdEDEN_last());
-			grid.cool = log10(cdHeating_last()-cdCooling_last());
+			grid.cool = log10(cdCooling_last());
+			grid.heat = log10(cdHeating_last());
 
 			/* if we have run off end of array of models do not try to pull out
 			 * results since they do not exist*/
@@ -542,8 +546,8 @@ int main( int argc, char *argv[] )
 			//fprintf(ioDATA,"%i\t%i\t%g\t" , grid.exit_status,	grid.nWarnings , grid.etime);
 
 			/* print grid parameters for this model */
-			fprintf(ioDATA,"%.3f\t%.3f\t%.3f\t%.3f\t",grid.hden, temperature,
-				grid.eden , grid.cool );
+			fprintf(ioDATA,"%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t",grid.hden, temperature,
+				grid.eden , grid.cool, grid.heat );
 
 #			if !VERY_QUICK_MODEL
 			/* print main set of line intensiies */
@@ -576,9 +580,9 @@ int main( int argc, char *argv[] )
 		
 						/* print grid parameters for this model */
 						fprintf(ioDATA,
-							"%7.3f\t%7.3f\t%7.3f\t%7.3f\t",
+							"%7.3f\t%7.3f\t%7.3f\t%7.3f\t%7.3f\t",
 							grids[i].hden, grids[i].temperature ,
-							grids[i].eden , grids[i].cool  );
+							grids[i].eden , grids[i].cool, grids[i].heat  );
 #						if !VERY_QUICK_MODEL
 						/* print line intensiies */
 						for( n=0; n<nLines; ++n )
