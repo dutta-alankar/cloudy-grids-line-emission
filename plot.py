@@ -9,7 +9,7 @@ Created on Sun Feb 10 18:26:56 2019
 import matplotlib.pyplot as plt
 from matplotlib import rc,rcParams
 import numpy as np
-import corner
+#import corner
 
 data = np.loadtxt('OIII_spectra.lin',skiprows=2)
 #print(data)
@@ -19,7 +19,7 @@ incrT = 0.01
 ne = np.arange(np.min(data[:,0]),np.max(data[:,0])+incrne,incrne)
 T = np.arange(np.min(data[:,1]),np.max(data[:,1])+incrT,incrT)
 
-x, y, ratio = data[:,0], data[:,1], data[:,4]
+x, y, ratio = data[:,0], data[:,1], data[:,5]
 counter = 0
 nene, TT = np.meshgrid(ne,T)
 ratio_cont = np.zeros((len(T),len(ne)))
@@ -74,7 +74,7 @@ figure = corner.corner(samples, labels=[r"$\log(n_H)$", r"$\log(T)$"],
                        )
 plt.show()
 """
-cool = data[:,3]
+cool = np.log10(np.abs(10.**data[:,3] - 10.**data[:,4]))
 counter = 0
 nene, TT = np.meshgrid(ne,T)
 cool_cont = np.zeros((len(T),len(ne)))
