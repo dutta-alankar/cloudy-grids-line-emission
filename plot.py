@@ -84,7 +84,7 @@ for i in range(len(ne)):
         counter += 1
 
 plt.figure(figsize=(13,10))
-plt.pcolormesh(ne,T,cool_cont) #change normalization with respect to 4363 A line intensity
+plt.pcolormesh(ne,T,cool_cont) 
 plt.colorbar()
 rcParams['contour.negative_linestyle'] = 'solid'
 CS = plt.contour(ne,T,cool_cont, 10,colors='white')
