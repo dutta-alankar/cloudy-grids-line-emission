@@ -29,6 +29,6 @@ Note that you can also run the code in serial without MPI in any c++14 compliant
 
 For example, using g++
 
-```g++ -O3 -o mycloudy_mpi.exe mpi_grid.cpp -L. -lcloudy -lm -std=c++14```
+```g++ -O3 -o mycloudy_serial.exe mpi_grid.cpp -L. -lcloudy -lm -std=c++14```
 
 You can also look up the comprehensive CLOUDY manual (provided with the package) for any customization of your own.
