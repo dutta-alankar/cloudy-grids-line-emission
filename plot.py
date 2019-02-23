@@ -74,7 +74,7 @@ figure = corner.corner(samples, labels=[r"$\log(n_H)$", r"$\log(T)$"],
                        )
 plt.show()
 """
-cool = np.log10(np.abs((10.**data[:,3] - 10.**data[:,4]))/10**(data[:,0]*data[:,2]))
+cool = np.log10(np.abs((10.**data[:,3] - 10.**data[:,4]))/10**(data[:,0]+data[:,2]))
 counter = 0
 nene, TT = np.meshgrid(ne,T)
 cool_cont = np.zeros((len(T),len(ne)))
