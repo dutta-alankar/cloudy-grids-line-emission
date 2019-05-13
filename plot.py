@@ -96,7 +96,6 @@ rc('xtick', labelsize=18)
 rc('ytick', labelsize=18)
 plt.savefig('cooling.png')
 plt.show()
-plt.show()
 
 N = len(ne)
 coolT = np.matmul(cool_cont,np.ones((N,1)))/N
