@@ -11,6 +11,8 @@ https://drive.google.com/file/d/1oroKuFMu3Mu1JcKFj-JlNMAxiRhJze6D/view?usp=shari
 
 Dependency: Any MPI enabled C++ compiler that supports std=c++14 flag (MPI based on c++14 compliant compiler e.g gcc-6.x)
 
+Please be sure that CLOUDY_DATA_PATH environment variable is exported to the Cloudy database location
+
 To compile the code in the repo, do the following:
 
 - Download and untar CLOUDY
